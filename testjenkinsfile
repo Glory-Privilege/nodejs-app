@@ -22,17 +22,18 @@ pipeline {
 
         stage('Pack_APP') {
             steps {
-                sh 'rm -rf *.tgz || echo"'
+                sh 'rm -rf *.tgz || echo "No .tgz files to delete"'
                 sh 'npm pack'
             }
         }
 
         stage('Upload artifact') {
             steps {
-                sh 'curl -uadmin:AP53xfxUghB2m1yZ8yxc57jRpKJ -T \
-                *..tgz\
-                "http://44.223.6.170:8081/artifactory/utc-nodejs/utc-app-${BUILD_ID}.tgz"'
-                
+                sh '''
+                curl -u admin:AP53xfxUghB2m1yZ8yxc57jRpKJ -T \
+                *.tgz \
+                "http://44.223.6.170:8081/artifactory/utc-nodejs/utc-app-${BUILD_ID}.tgz"
+                '''
             }
         }
     }
