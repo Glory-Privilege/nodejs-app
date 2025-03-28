@@ -1,23 +1,42 @@
 pipeline {
     agent {
-        docker { image 'nodejs' }
+        docker { image 'node:14' }
     }
-    
+
     environment {
-        HOME = "."  // Fixed the syntax (added double quotes)
+        HOME = "."
     }
-    
+
     stages {
         stage('Test') {
             steps {
                 sh 'node --version'
             }
         }
-        
+
         stage('Install_APP') {
             steps {
                 sh 'npm install'
             }
         }
+
+        stage('Pack_APP') {
+            steps {
+                sh 'rm -rf *.tgz || echo"'
+                sh 'npm pack'
+            }
+        }
+
+        stage('Upload artifact') {
+            steps {
+                sh 'curl -uadmin:AP53xfxUghB2m1yZ8yxc57jRpKJ -T \
+                *..tgz\
+                "http://44.223.6.170:8081/artifactory/utc-nodejs/utc-app-${BUILD_ID}.tgz"'
+                
+            }
+        }
     }
 }
+
+
+
