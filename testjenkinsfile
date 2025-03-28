@@ -1,0 +1,23 @@
+pipeline {
+    agent {
+        docker { image 'nodejs' }
+    }
+    
+    environment {
+        HOME = "."  // Fixed the syntax (added double quotes)
+    }
+    
+    stages {
+        stage('Test') {
+            steps {
+                sh 'node --version'
+            }
+        }
+        
+        stage('Install_APP') {
+            steps {
+                sh 'npm install'
+            }
+        }
+    }
+}
